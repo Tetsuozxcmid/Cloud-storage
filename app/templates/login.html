@@ -2,16 +2,16 @@
 
 {% block content %}
 <div class="container d-flex justify-content-center">
-    <div class="card shadow-lg p-4 w-50">
+    <div class="card shadow-lg p-4 w-50 border border-light rounded">
         <h2 class="text-center mb-4">Login</h2>
         <form action="/login" method="POST">
             <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <label for="name" class="form-label">Username</label>
+                <input type="text" class="form-control border border-light" id="name" name="name" placeholder=" type your username" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control border border-light" id="password" name="password" placeholder="type your password" required>
             </div>
             <button type="submit" class="btn btn-success w-100">Login</button>
         </form>
@@ -20,4 +20,6 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
+

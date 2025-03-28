@@ -41,7 +41,9 @@ def register_routes(app, db):
             if not name or not password:
                 return jsonify({'error': 'Missing name or password'}), 400
             token = user.get_token()
-            return jsonify({'message': 'User registered successfully', 'token': token}), 200
+            login_user(user)
+            
+            return redirect(url_for('index'))
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -54,9 +56,10 @@ def register_routes(app, db):
             if user:
                 login_user(user)
                 session['user_id'] = user.id
-            return jsonify({'message': 'Logged in successfully'}), 200
+            return redirect(url_for('index'))
         else:
-            return jsonify({'error': 'Invalid username or password'}), 401
+            fail = "Authentication failed, user does not exist"
+            return redirect(url_for('index',fail=fail))
 
     @app.route('/delete/<upload_id>', methods=['GET', 'POST'])
     @login_required
