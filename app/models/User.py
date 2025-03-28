@@ -30,5 +30,3 @@ class User(db.Model, UserMixin):
         if not user or not bcrypt.check_password_hash(user.password, password):
             raise Exception('No user with this password')
         return user
-
-

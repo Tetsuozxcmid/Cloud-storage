@@ -1,4 +1,4 @@
-from flask import render_template,redirect,request,url_for,send_file
+from flask import render_template, redirect, request, url_for, send_file
 from flask_login import login_user, logout_user, current_user, login_required
 from flask import session
 from flask import jsonify
@@ -7,25 +7,27 @@ from io import BytesIO
 
 from app.models.User import User
 from app.models.Object import Object
-def register_routes(app,db):
-    @app.route('/',methods=['GET', 'POST'])
+
+
+def register_routes(app, db):
+    @app.route('/', methods=['GET', 'POST'])
     @login_required
     def index():
         files = []
         if request.method == 'POST':
             file = request.files['file']
-            upload = Object(filename=file.filename,data=file.read(),user_name=current_user.name,user_id = current_user.id)
+            upload = Object(filename=file.filename, data=file.read(
+            ), user_name=current_user.name, user_id=current_user.id)
             db.session.add(upload)
             db.session.commit()
         files = Object.query.all()
-        return render_template('index.html',user=current_user,db=db,files=files)
-    
+        return render_template('index.html', user=current_user, db=db, files=files)
+
     @app.route('/download/<upload_id>')
     def download(upload_id):
         upload = Object.query.filter_by(id=upload_id).first()
-        return send_file(BytesIO(upload.data),download_name=upload.filename,as_attachment=True)
-        
-    
+        return send_file(BytesIO(upload.data), download_name=upload.filename, as_attachment=True)
+
     @app.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == 'GET':
@@ -39,8 +41,8 @@ def register_routes(app,db):
             if not name or not password:
                 return jsonify({'error': 'Missing name or password'}), 400
             token = user.get_token()
-            return jsonify({'message': 'User registered successfully', 'token':token}), 200
-        
+            return jsonify({'message': 'User registered successfully', 'token': token}), 200
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == 'GET':
@@ -55,7 +57,7 @@ def register_routes(app,db):
             return jsonify({'message': 'Logged in successfully'}), 200
         else:
             return jsonify({'error': 'Invalid username or password'}), 401
-        
+
     @app.route('/delete/<upload_id>', methods=['GET', 'POST'])
     @login_required
     def delete(upload_id):
@@ -66,11 +68,8 @@ def register_routes(app,db):
             return redirect(url_for('index'))
         else:
             return "You are not authorized to delete this file", 403
-        
 
     @app.route('/logout', methods=['GET', 'POST'])
     def logout():
         logout_user()
-        return jsonify({'message': 'Logged out successfully'}), 200
-
-                
+        return redirect(url_for('index'))
