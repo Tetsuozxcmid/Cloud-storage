@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container">
+            <h2 class="text-center mb-4">Cloud Storage - <span class="text-primary">Secure</span> and <span class="text-success">Fast</span></h2>
+
+            <!-- File Upload Form -->
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h5 class="m-0 text-primary">Upload File</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <input type="file" class="form-control" name="file" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Upload</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- List of Uploaded Files -->
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h5 class="m-0 text-primary">Available Files</h5>
+                </div>
+                <div class="card-body">
+                    {% if files %}
+                        <ul class="list-group">
+                            {% for file in files %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{{ url_for('download', upload_id=file.id) }}" class="text-decoration-none">
+                                        {{ file.filename }}
+                                    </a>
+                                {% if file.user_id == user.id %}
+                                    <a href="{{ url_for('delete', upload_id=file.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                                {% endif %}
+                                    <span class="text-muted">Uploaded by: {{ file.user_name }}</span>
+                                    <span class="badge bg-primary">{{ file.data|length }} bytes</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted text-center">No files uploaded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <h3>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a> to continue.</h3>
+        </div>
+    {% endif %}
+{% endblock %}
