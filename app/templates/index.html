@@ -20,7 +20,7 @@
                         {% if file.user_id == user.id %}
                             <a href="{{ url_for('delete', upload_id=file.id) }}" class="btn btn-danger btn-sm">Delete</a>
                         {% endif %}
-                        <span class="text-muted">{{ file.user_name }} - {{ file.data|length }} bytes</span>
+                        <a href="{{ url_for('user',upload_id=file.id)}}">{{ file.user_name }}</a>-{{ file.data|length }} bytes</span>
                     </li>
                 {% endfor %}
             </ul>

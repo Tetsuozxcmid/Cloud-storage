@@ -76,3 +76,12 @@ def register_routes(app, db):
     def logout():
         logout_user()
         return redirect(url_for('index'))
+    
+    @app.route('/user/<upload_id>', methods=['GET', 'POST'])
+    @login_required
+    def user(upload_id):
+        upload = Object.query.filter_by(id=upload_id).first()
+        files = Object.query.all()
+        return render_template('user.html',upload=upload,user=current_user,files=files)
+        
+    

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="card shadow-lg p-4 w-50 border border-light rounded">
+        <h2 class="text-center mb-4">Profile {{ upload.user_name }} </h2>
+
+        {% if upload %}
+            <div class="mb-3">
+                <h3 class="text-center">Uploaded File:</h3>
+                <p class="text-center">Filename: {{ upload.filename }}</p>
+                <p class="text-center">File Size: {{ upload.data|length }} bytes</p>
+
+            </div>
+        {% else %}
+            <p class="text-center">No file uploaded.</p>
+        {% endif %}
+
+        <div class="text-center mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
