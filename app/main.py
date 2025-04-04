@@ -25,7 +25,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
         'SQLALCHEMY_DATABASE_URI')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
+    app.config['TESTING'] = os.getenv('TESTING')
     db.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
